@@ -782,6 +782,8 @@ bool ToolBase::root_handler(GdkEvent* event) {
         bool ctrl = (event->scroll.state & GDK_CONTROL_MASK);
         bool shift = (event->scroll.state & GDK_SHIFT_MASK);
         bool wheelzooms = prefs->getBool("/options/wheelzooms/value");
+        bool combinezoomrotate = prefs->getBool(
+                "/options/combinezoomrotate/value");
 
         int const wheel_scroll = prefs->getIntLimited(
                 "/options/wheelscroll/value", 40, 0, 1000);
@@ -838,6 +840,10 @@ bool ToolBase::root_handler(GdkEvent* event) {
             double const zoom_inc = prefs->getDoubleLimited(
                     "/options/zoomincrement/value", M_SQRT2, 1.01, 10);
 
+            double rotate_inc = prefs->getDoubleLimited(
+                    "/options/rotateincrement/value", 15, 1, 90, "°" );
+            rotate_inc *= M_PI/180.0;
+
             switch (event->scroll.direction) {
             case GDK_SCROLL_UP:
                 rel_zoom = zoom_inc;
@@ -847,6 +853,10 @@ bool ToolBase::root_handler(GdkEvent* event) {
                 rel_zoom = 1 / zoom_inc;
                 break;
 
+            case GDK_SCROLL_RIGHT:
+                rotate_inc = -rotate_inc;
+            case GDK_SCROLL_LEFT:
+                // break through on sideways scrolling to disable zooming
             default:
                 rel_zoom = 0.0;
                 break;
@@ -855,6 +865,9 @@ bool ToolBase::root_handler(GdkEvent* event) {
             if (rel_zoom != 0.0) {
                 Geom::Point const scroll_dt = desktop->point();
                 desktop->zoom_relative_keep_point(scroll_dt, rel_zoom);
+            } else if (combinezoomrotate) {
+                Geom::Point const scroll_dt = desktop->point();
+                desktop->rotate_relative_keep_point(scroll_dt, rotate_inc);
             }
 
             /* no modifier, pan up--down (left--right on multiwheel mice?) */

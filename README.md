@@ -25,3 +25,7 @@ processes.
 For installation, please see:
 
   INSTALL.md
+
+## Changes
+
+* Add ability to rotate and zoom with same modifier

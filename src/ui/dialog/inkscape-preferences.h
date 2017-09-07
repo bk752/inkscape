@@ -201,6 +201,7 @@ protected:
     UI::Widget::PrefSpinButton _scroll_auto_thres;
     UI::Widget::PrefCheckButton _scroll_space;
     UI::Widget::PrefCheckButton _wheel_zoom;
+    UI::Widget::PrefCheckButton _combine_zoom_rotate;
 
     Gtk::Scale      *_slider_snapping_delay;
 

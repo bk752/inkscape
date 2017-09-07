@@ -1242,6 +1242,9 @@ void InkscapePreferences::initPageBehavior()
     _wheel_zoom.init ( _("Mouse wheel zooms by default"), "/options/wheelzooms/value", false);
     _page_scrolling.add_line( false, "", _wheel_zoom, "",
                             _("When on, mouse wheel zooms without Ctrl and scrolls canvas with Ctrl; when off, it zooms with Ctrl and scrolls without Ctrl"));
+    _combine_zoom_rotate.init ( _("Scrolling sideways while zooming rotates canvas"), "/options/combinezoomrotate/value", false);
+    _page_scrolling.add_line( false, "", _combine_zoom_rotate, "",
+                            _("When on, scrolling sideways whenever mouse wheel zooms (while holding Ctrl by default) rotates the canvas; when off, scrolling does not rotate unless Ctrl+shift is held"));
     this->AddPage(_page_scrolling, _("Scrolling"), iter_behavior, PREFS_PAGE_BEHAVIOR_SCROLLING);
 
     // Snapping options
